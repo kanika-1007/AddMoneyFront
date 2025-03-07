@@ -4,12 +4,12 @@ import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, bro
 // Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyBO7vHvxfsRImHYoyrADhCENoLnbMbNNO0",
+    apiKey: "AIzaSyDLKtnV3Jq4pe5gORqSAdJAmj5OamT0SGk",
     authDomain: "sanwariya-9e5b1.firebaseapp.com",
     projectId: "sanwariya-9e5b1",
     storageBucket: "sanwariya-9e5b1.firebasestorage.app",
     messagingSenderId: "1054330094963",
-    appId: "1:1054330094963:web:e12fd26f4d9d3d32bb7106",
+    appId: "1:1054330094963:android:e8416ee398a50e0fbb7106",
     measurementId: "G-KVDVTBNPX0"
   };
 

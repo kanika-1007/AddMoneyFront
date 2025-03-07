@@ -22,19 +22,14 @@ let userId = null;
 let phone = null;
 
 onAuthStateChanged(auth, async (user) => {
-    if (user) {
         userId = user.uid; // Firebase Auth UID
-        phone = user.phoneNumber || user.email; // Use phone number or email if available
+        phone = user.phone || user.email; // Use phone number or email if available
 
         console.log("User ID:", userId);
         console.log("Phone:", phone);
 
         fetchBalance();
         fetchHistory();
-    } else {
-        console.error("No user logged in");
-        alert("You must be logged in to perform this action.");
-    }
 });
 
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";

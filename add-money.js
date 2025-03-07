@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 // Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -18,18 +18,41 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
 
+// Set persistence so login state persists across page loads
+setPersistence(auth, browserLocalPersistence).catch(error => {
+    console.error("Error setting persistence:", error);
+});
+
+// Check URL for a token (passed from the app)
+const params = new URLSearchParams(window.location.search);
+const token = params.get("token");
+
+if (token) {
+    signInWithCustomToken(auth, token)
+      .then((userCredential) => {
+          console.log("Signed in with custom token", userCredential.user);
+      })
+      .catch((error) => {
+          console.error("Error signing in with custom token:", error);
+      });
+}
+
 let userId = null;
 let phone = null;
 
 onAuthStateChanged(auth, async (user) => {
-        userId = user.uid; // Firebase Auth UID
-        phone = user.phone || user.email; // Use phone number or email if available
-
+    if (user) {
+        userId = user.uid;
+        phone = user.phoneNumber || user.email;
         console.log("User ID:", userId);
         console.log("Phone:", phone);
 
         fetchBalance();
         fetchHistory();
+    } else {
+        console.error("No user logged in");
+        alert("You must be logged in to perform this action.");
+    }
 });
 
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";

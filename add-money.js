@@ -84,8 +84,8 @@ let phone = "";
 
 // **For testing without login, use hardcoded values**
 if (isTesting) {
-    userId = "9664361536";
-    phone = "9664361536";
+    userId = "7726821957";
+    phone = "7726821957";
 } else {
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {

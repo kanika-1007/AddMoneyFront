@@ -84,8 +84,8 @@ let phone = "";
 
 // **For testing without login, use hardcoded values**
 if (isTesting) {
-    userId = "7726821957";
-    phone = "7726821957";
+    userId = "9664361536";
+    phone = "9664361536";
 } else {
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
@@ -110,42 +110,48 @@ document.addEventListener('DOMContentLoaded', async () => {
     const messageBox = document.getElementById('add-money-message'); // Element to show success message
 
     // Fetch and display balance
-   async function fetchBalance() {
-    try {
-        const response = await fetch(`/api/add-money/balance/${userId}`);
-        const data = await response.json();
-        document.getElementById('available-balance').textContent = data.balance;
-    } catch (err) {
-        console.error('Error fetching balance:', err);
+    async function fetchBalance() {
+        try {
+            const userDoc = await getDoc(doc(db, "users", phone));
+            if (userDoc.exists()) {
+                document.getElementById('available-balance').textContent = userDoc.data().balance || 0;
+            } else {
+                document.getElementById('available-balance').textContent = 0;
+            }
+        } catch (err) {
+            console.error('Error fetching balance:', err);
+        }
     }
-}
+
     // Submit add money request
-   async function submitAddMoneyRequest(utr) {
-    const amount = parseInt(amountInput.value);
-    if (!amount || amount < 100) {
-        alert('Minimum amount should be ₹100.');
-        return;
+    async function submitAddMoneyRequest(utr) {
+        const amount = parseInt(amountInput.value);
+
+        if (!amount || amount < 100) {
+            alert('Minimum amount should be ₹100.');
+            return;
+        }
+
+        if (!utr.trim()) {
+            alert('Please enter a valid UTR number.');
+            return;
+        }
+
+        try {
+            await addDoc(collection(db, "add_money_requests"), {
+                userId,
+                amount,
+                utr,
+                status: "Pending",
+            });
+
+            showMessage('Details submitted successfully! Awaiting admin confirmation.', 'success');
+            fetchHistory();
+        } catch (err) {
+            console.error('Error submitting request:', err);
+        }
     }
 
-    if (!utr.trim()) {
-        alert('Please enter a valid UTR number.');
-        return;
-    }
-
-    try {
-        const response = await fetch("/api/add-money/request", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId, amount, utr })
-        });
-
-        const data = await response.json();
-        showMessage(data.message, 'success');
-        fetchHistory();
-    } catch (err) {
-        console.error('Error submitting request:', err);
-    }
-}
     async function fetchUPIID() {
         try {
             const upiCollection = collection(db, "settings");
@@ -178,13 +184,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Fetch and display request history
-   async function fetchHistory() {
-    try {
-        const response = await fetch(`/api/add-money/requests/all`);
-        const requests = await response.json();
-        historyTableBody.innerHTML = '';
-        requests.forEach((request, index) => {
-            if (request.userId === userId) {  // Filter requests belonging to the user
+    async function fetchHistory() {
+        try {
+            const q = query(collection(db, "add_money_requests"), where("userId", "==", userId));
+            const querySnapshot = await getDocs(q);
+
+            historyTableBody.innerHTML = '';
+            querySnapshot.forEach((doc, index) => {
+                const request = doc.data();
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>₹${request.amount}</td>
@@ -192,12 +199,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td>${request.status}</td>
                 `;
                 historyTableBody.appendChild(row);
-            }
-        });
-    } catch (err) {
-        console.error('Error fetching history:', err);
+            });
+        } catch (err) {
+            console.error('Error fetching history:', err);
+        }
     }
-}
+
     window.copyUPI = function() {
         const upiId = document.getElementById("upi-id").textContent;
         if (upiId && upiId !== "Fetching UPI ID...") {

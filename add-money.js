@@ -77,7 +77,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // **TEST MODE** - Set this to `false` before deploying
-const isTesting = true;
+const isTesting = false;
 
 let userId = "";
 let phone = "";

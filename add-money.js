@@ -29,18 +29,19 @@ setPersistence(auth, browserLocalPersistence)
 const params = new URLSearchParams(window.location.search);
 const token = params.get("token");
 
-if (token) {
+if (eyJhbGciOiJSUzI1NiIsImtpZCI6ImJjNDAxN2U3MGE4MWM5NTMxY2YxYjY4MjY4M2Q5OThlNGY1NTg5MTkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc2Fud2FyaXlhLTllNWIxIiwiYXVkIjoic2Fud2FyaXlhLTllNWIxIiwiYXV0aF90aW1lIjoxNzQxNTk0NDU5LCJ1c2VyX2lkIjoiRnJ2ckRTWDZZQ05jYVdzUUMwMUJPUFlvOHV2MiIsInN1YiI6IkZydnJEU1g2WUNOY2FXc1FDMDFCT1BZbzh1djIiLCJpYXQiOjE3NDE1OTUwNDEsImV4cCI6MTc0MTU5ODY0MSwiZW1haWwiOiI3NzI2ODIxOTU3QGV4YW1wbGUuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbIjc3MjY4MjE5NTdAZXhhbXBsZS5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.tDl-wGqaJ_ECCV3o-2kaeYVbs9q-036CTNZyqU8ATkYDd01OJX_McmtL3ZDBnVgc41RiE6OEaOOl0xE0wEMYZBOAlcpBSVdHDXav6gstQFufhZjVgM9FricPTfgmitfsc09C-uZRglnKREHCFVKz__o5vWoB6tw527f0Ff-hus1O4wygq9lVgrnp4nhmHE9_3C6LVv67dq81TM9rt7p36o-rbksRAwLpgTTMbCpqK-fPjO02feHbJ8WtbF8VxZPXCIRzWXWugEl8E9UVF36MAK7Z1aySla8MivUcmPEzcdOiI5PLoMcvwQl_07GpSD2n8x8ajmZYmh2d0kUJQMVYrg) {
+    console.log("🔑 Token found in URL:", token);
+    
     signInWithCustomToken(auth, token)
         .then(userCredential => {
-            console.log("Signed in with custom token:", userCredential.user);
+            alert("✅ Successfully signed in:", userCredential.user);
         })
         .catch(error => {
-            console.error("Error signing in with custom token:", error);
-            alert("Authentication failed. Please log in again.");
+            console.error("❌ Authentication Error:", error.code, error.message);
+            alert(`Authentication failed: ${error.message}`);
         });
-}
-else{
-  alert("No token found in URL");
+} else {
+    console.warn("⚠️ No token found in the URL.");
 }
 
 onAuthStateChanged(auth, async (currentUser) => {

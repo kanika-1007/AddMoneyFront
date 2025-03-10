@@ -1,9 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-// Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBO7vHvxfsRImHYoyrADhCENoLnbMbNNO0",
   authDomain: "sanwariya-9e5b1.firebaseapp.com",
@@ -20,9 +17,13 @@ const db = getFirestore(app);
 const auth = getAuth();
 
 // Set persistence so login state persists across page loads
-setPersistence(auth, browserLocalPersistence).catch(error => {
-    console.error("Error setting persistence:", error);
-});
+setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+        console.log("Persistence set to local storage.");
+    })
+    .catch(error => {
+        console.error("Error setting persistence:", error);
+    });
 
 // Check URL for a token (passed from the app)
 const params = new URLSearchParams(window.location.search);
@@ -30,24 +31,25 @@ const token = params.get("token");
 
 if (token) {
     signInWithCustomToken(auth, token)
-      .then((userCredential) => {
-          console.log("Signed in with custom token", userCredential.user);
-      })
-      .catch((error) => {
-          console.error("Error signing in with custom token:", error);
-      });
+        .then(userCredential => {
+            console.log("Signed in with custom token:", userCredential.user);
+        })
+        .catch(error => {
+            console.error("Error signing in with custom token:", error);
+            alert("Authentication failed. Please log in again.");
+        });
+}
+else{
+  alert("No token found in URL");
 }
 
-let userId = null;
-let phone = null;
+onAuthStateChanged(auth, async (currentUser) => {
+    if (currentUser) {
+        const userId = currentUser.uid;
+        const phone = currentUser.phoneNumber || currentUser.email;
+        console.log("User authenticated. ID:", userId, "Phone:", phone);
 
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        userId = user.uid;
-        phone = user.phoneNumber || user.email;
-        console.log("User ID:", userId);
-        console.log("Phone:", phone);
-
+        // Fetch balance and transaction history after authentication
         fetchBalance();
         fetchHistory();
     } else {

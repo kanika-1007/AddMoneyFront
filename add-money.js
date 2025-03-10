@@ -89,7 +89,7 @@ if (isTesting) {
     userId = "7726821957";
     phone = "7726821957";
 } else {
-    firebase.auth().onAuthStateChanged((user) => {
+onAuthStateChanged(auth, (user) => {
         if (user) {
             userId = user.uid;
             phone = user.phoneNumber || user.email;

@@ -34,7 +34,7 @@ async function authenticateUser() {
     }
 
     try {
-        const userCredential = await signInWithCustomToken(auth, token);
+        const userCredential = await firebase.auth().signInWithCustomToken(token);
         alert("User signed in:", userCredential.user);
         document.getElementById("authStatus").innerText = `Welcome, ${userCredential.user.email || "User"}`;
     } catch (error) {

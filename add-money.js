@@ -1,7 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "firebase/auth";
 // Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBO7vHvxfsRImHYoyrADhCENoLnbMbNNO0",

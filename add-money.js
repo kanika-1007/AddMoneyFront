@@ -34,11 +34,12 @@ async function authenticateUser() {
     }
 
     try {
+        console.log("Attempting to sign in with token:", token);
         const userCredential = await firebase.auth().signInWithCustomToken(token);
         alert("User signed in:", userCredential.user);
         document.getElementById("authStatus").innerText = `Welcome, ${userCredential.user.email || "User"}`;
     } catch (error) {
-        alert("Authentication failed:", error);
+        console.error("Error signing in:", error.code, error.message);
         document.getElementById("authStatus").innerText = "Authentication failed. Please try again.";
     }
 }

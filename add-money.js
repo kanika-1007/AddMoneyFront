@@ -150,4 +150,5 @@ window.addEventListener('DOMContentLoaded', () => {
             alert("You must be logged in to perform this action.");
         }
     });
+    fetchUPIID();
 });

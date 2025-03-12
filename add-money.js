@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { initializeApp } from "./firebase/app";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "./firebase/firestore";
+import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "./firebase/auth";
 // Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBO7vHvxfsRImHYoyrADhCENoLnbMbNNO0",

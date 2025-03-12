@@ -131,6 +131,8 @@ window.copyUPI = function() {
 
 // Event listeners
 window.addEventListener('DOMContentLoaded', () => {
+    authenticateUser();
+    
     const manualSubmitButton = document.getElementById('manual-submit-button');
     const manualUtrInput = document.getElementById('manual-utr');
     const amountInput = document.getElementById('amount');

@@ -59,7 +59,7 @@
 // });
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
- import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 // Firebase configuration
@@ -72,34 +72,58 @@ const firebaseConfig = {
     appId: "1:1054330094963:web:e12fd26f4d9d3d32bb7106",
     measurementId: "G-KVDVTBNPX0"
   };
-
-// Initialize Firebase and Firestore
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth();
-
-// **TEST MODE** - Set this to `false` before deploying
-const isTesting = false;
-
-let userId = "";
-let phone = "";
-
-// **For testing without login, use hardcoded values**
-if (isTesting) {
-    userId = "7726821957";
-    phone = "7726821957";
-} else {
-onAuthStateChanged(auth, (user) => {
-        if (user) {
-            userId = user.uid;
-            phone = user.phoneNumber || user.email;
-            fetchBalance();
-            fetchHistory();
-        } else {
-            alert("You should log in first to perform this action.");
-        }
-    });
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
 }
+async function authenticateUser() {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    if (!token) {
+        console.error("No token found in the URL.");
+        document.getElementById("authStatus").innerText = "Authentication failed. No token provided.";
+        return;
+    }
+
+    console.log("Token received:", token);
+
+    try {
+        const userCredential = await firebase.auth().signInWithCustomToken(token);
+        console.log("User signed in:", userCredential.user);
+        document.getElementById("authStatus").innerText = `Welcome, ${userCredential.user.email}`;
+    } catch (error) {
+        console.error("Authentication failed:", error);
+        document.getElementById("authStatus").innerText = "Authentication failed. Please try again.";
+    }
+}
+
+// // Initialize Firebase and Firestore
+// const app = initializeApp(firebaseConfig);
+// const db = getFirestore(app);
+// const auth = getAuth();
+
+// // **TEST MODE** - Set this to `false` before deploying
+// const isTesting = false;
+
+// let userId = "";
+// let phone = "";
+
+// // **For testing without login, use hardcoded values**
+// if (isTesting) {
+//     userId = "7726821957";
+//     phone = "7726821957";
+// } else {
+// onAuthStateChanged(auth, (user) => {
+//         if (user) {
+//             userId = user.uid;
+//             phone = user.phoneNumber || user.email;
+//             fetchBalance();
+//             fetchHistory();
+//         } else {
+//             alert("You should log in first to perform this action.");
+//         }
+//     });
+// }
 
 document.addEventListener('DOMContentLoaded', async () => {
     const manualSubmitButton = document.getElementById('manual-submit-button');
@@ -237,6 +261,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             historyModal.style.display = 'none';
         }
     });
+    window.onload = authenticateUser;
 
     // Initialize
     fetchUPIID();

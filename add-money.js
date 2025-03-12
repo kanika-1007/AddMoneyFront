@@ -19,8 +19,8 @@ const auth = getAuth();
 
 // Set authentication persistence
 setPersistence(auth, browserLocalPersistence)
-    .then(() => console.log("Persistence set to local storage."))
-    .catch(error => console.error("Error setting persistence:", error));
+    .then(() => alert("Persistence set to local storage."))
+    .catch(error => alert("Error setting persistence:", error));
 
 // Authenticate user via token in URL
 async function authenticateUser() {
@@ -28,17 +28,17 @@ async function authenticateUser() {
     const token = params.get("token");
 
     if (!token) {
-        console.error("No token found in the URL.");
+        alert("No token found in the URL.");
         document.getElementById("authStatus").innerText = "Authentication failed. No token provided.";
         return;
     }
 
     try {
         const userCredential = await signInWithCustomToken(auth, token);
-        console.log("User signed in:", userCredential.user);
+        alert("User signed in:", userCredential.user);
         document.getElementById("authStatus").innerText = `Welcome, ${userCredential.user.email || "User"}`;
     } catch (error) {
-        console.error("Authentication failed:", error);
+        alert("Authentication failed:", error);
         document.getElementById("authStatus").innerText = "Authentication failed. Please try again.";
     }
 }

@@ -1,6 +1,6 @@
-import { initializeApp } from "./firebase/app";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "./firebase/firestore";
-import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "./firebase/auth";
+import { initializeApp } from "./node_modules/@firebase/app"
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "./node_modules/@firebase/firestore";
+import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "./node_modules/@firebase/auth";
 // Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBO7vHvxfsRImHYoyrADhCENoLnbMbNNO0",
@@ -14,8 +14,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth();
+const auth = getAuth(app);
 
+export { auth, db };
 // Set authentication persistence
 setPersistence(auth, browserLocalPersistence)
     .then(() => alert("Persistence set to local storage."))

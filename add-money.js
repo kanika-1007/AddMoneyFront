@@ -1,15 +1,15 @@
-import { initializeApp } from "./node_modules/@firebase/app"
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "./node_modules/@firebase/firestore";
-import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "./node_modules/@firebase/auth";
-// Firebase configuration
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "firebase/auth";// Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyBO7vHvxfsRImHYoyrADhCENoLnbMbNNO0",
-    authDomain: "sanwariya-9e5b1.firebaseapp.com",
-    projectId: "sanwariya-9e5b1",
-    storageBucket: "sanwariya-9e5b1.firebasestorage.app",
-    messagingSenderId: "1054330094963",
-    appId: "1:1054330094963:web:e12fd26f4d9d3d32bb7106",
-    measurementId: "G-KVDVTBNPX0"
+  apiKey: "AIzaSyBO7vHvxfsRImHYoyrADhCENoLnbMbNNO0",
+  authDomain: "sanwariya-9e5b1.firebaseapp.com",
+  projectId: "sanwariya-9e5b1",
+  storageBucket: "sanwariya-9e5b1.firebasestorage.app",
+  messagingSenderId: "1054330094963",
+  appId: "1:1054330094963:web:e12fd26f4d9d3d32bb7106",
+  measurementId: "G-KVDVTBNPX0"
 };
 
 const app = initializeApp(firebaseConfig);

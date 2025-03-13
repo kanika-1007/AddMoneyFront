@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "firebase/auth";// Firebase configuration
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBO7vHvxfsRImHYoyrADhCENoLnbMbNNO0",

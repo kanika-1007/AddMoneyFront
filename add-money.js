@@ -1,8 +1,6 @@
-
 import { initializeApp } from "./node_modules/@firebase/app"
 import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "./node_modules/@firebase/firestore";
 import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "./node_modules/@firebase/auth";
-
 // Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBO7vHvxfsRImHYoyrADhCENoLnbMbNNO0",
@@ -16,8 +14,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth();
+const auth = getAuth(app);
 
+export { auth, db };
 // Set authentication persistence
 setPersistence(auth, browserLocalPersistence)
     .then(() => alert("Persistence set to local storage."))
@@ -35,11 +34,12 @@ async function authenticateUser() {
     }
 
     try {
-        const userCredential = await signInWithCustomToken(auth, token);
+        console.log("Attempting to sign in with token:", token);
+        const userCredential = await firebase.auth().signInWithCustomToken(token);
         alert("User signed in:", userCredential.user);
         document.getElementById("authStatus").innerText = `Welcome, ${userCredential.user.email || "User"}`;
     } catch (error) {
-        alert("Authentication failed:", error);
+        console.error("Error signing in:", error.code, error.message);
         document.getElementById("authStatus").innerText = "Authentication failed. Please try again.";
     }
 }
@@ -132,6 +132,8 @@ window.copyUPI = function() {
 
 // Event listeners
 window.addEventListener('DOMContentLoaded', () => {
+    authenticateUser();
+    
     const manualSubmitButton = document.getElementById('manual-submit-button');
     const manualUtrInput = document.getElementById('manual-utr');
     const amountInput = document.getElementById('amount');

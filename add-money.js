@@ -1,7 +1,6 @@
-import { getAuth, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { auth } from "./firebase-config.js"; // Import Firebase auth from config
+import { signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const auth = getAuth();
-
 // Authenticate user via token in URL
 async function authenticateUser() {
     const params = new URLSearchParams(window.location.search);

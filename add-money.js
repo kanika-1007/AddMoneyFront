@@ -1,26 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+import { getAuth, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBO7vHvxfsRImHYoyrADhCENoLnbMbNNO0",
-  authDomain: "sanwariya-9e5b1.firebaseapp.com",
-  projectId: "sanwariya-9e5b1",
-  storageBucket: "sanwariya-9e5b1.firebasestorage.app",
-  messagingSenderId: "1054330094963",
-  appId: "1:1054330094963:web:e12fd26f4d9d3d32bb7106",
-  measurementId: "G-KVDVTBNPX0"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 const auth = getAuth(app);
-
-export { auth, db };
-// Set authentication persistence
-setPersistence(auth, browserLocalPersistence)
-    .then(() => alert("Persistence set to local storage."))
-    .catch(error => alert("Error setting persistence:", error));
 
 // Authenticate user via token in URL
 async function authenticateUser() {

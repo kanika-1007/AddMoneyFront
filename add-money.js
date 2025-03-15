@@ -1,5 +1,5 @@
 import { auth } from "./firebase-config.js"; // Import Firebase auth from config
-import { signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { signInWithIdToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // Authenticate user via token in URL
 async function authenticateUser() {
@@ -14,7 +14,7 @@ async function authenticateUser() {
 
     try {
         console.log("Attempting to sign in with token:", token);
-        const userCredential = await signInWithCustomToken(auth, token);
+        const userCredential = await signInWithIdToken(auth, token);
         alert("User signed in:", userCredential.user);
         document.getElementById("authStatus").innerText = `Welcome, ${userCredential.user.email || "User"}`;
     } catch (error) {
